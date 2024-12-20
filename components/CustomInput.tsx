@@ -1,5 +1,5 @@
 
-import { Control } from 'react-hook-form'
+import { Control, FieldPath } from 'react-hook-form'
 import { z } from 'zod'
 import {
     FormControl,
@@ -12,7 +12,7 @@ import { authFormSchema } from '@/lib/utils'
 
 interface CustomInput {
     control: Control<z.infer<typeof authFormSchema>>,
-    name: string,
+    name: FieldPath<z.infer<typeof authFormSchema>>,
     label: string,
     placeholder: string
 }
@@ -28,8 +28,12 @@ const CustomInput = ({ control, name, label, placeholder }: CustomInput) => {
 
                     <div className='flex w-full flex-col'>
                         <FormControl>
-                            <Input className='input-class'
-                                placeholder={placeholder} {...field} />
+                            <Input
+                                className='input-class'
+                                placeholder={placeholder}
+                                type= {name === 'password' ? 'password' : 'text'}
+                                {...field}
+                            />
 
                         </FormControl>
                         <FormMessage className='form-message  mt-2'></FormMessage>

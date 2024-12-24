@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import { z } from "zod"
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -16,9 +17,13 @@ import CustomInput from './CustomInput'
 import { authFormSchema } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
 
+import { signIn, signUp } from '@/lib/actions/user.actions'
+
 const AuthForm = ({ type }: { type: string }) => {
     const [user, setUser] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
+
+    const router = useRouter();
 
     const formSchema = authFormSchema(type);
 
@@ -27,13 +32,41 @@ const AuthForm = ({ type }: { type: string }) => {
         resolver: zodResolver(formSchema),
         defaultValues: {
             email: '',
+            password: '',
+            firstName: '',
+            lastName: '',
+            address1: '',
+            state: '',
+            postalCode: '',
+            dateOfBirth: '',
+            ssn: '',
         },
     })
 
     // Handle form submission
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    const onSubmit = async (data: z.infer<typeof formSchema>) => {
         setIsLoading(true)
-        console.log(values)
+        try {
+            if (type === 'sign-up') {
+                const newUser = await signUp(data);
+
+                setUser(newUser);
+            }
+
+            if (type === 'sign-in') {
+                // const response = await signIn({
+                //     email: data.email,
+                //     password: data.password
+                // });
+
+                // if(response){
+                //     router.push('/');
+                // }
+            }
+        }
+        catch (err) {
+            console.log(err)
+        }
         setIsLoading(false)
     }
 
@@ -71,6 +104,7 @@ const AuthForm = ({ type }: { type: string }) => {
                                     <div className='flex gap-4'>
 
                                         <CustomInput control={form.control} name='firstName' label='First Name' placeholder='Enter your first name' />
+                                        
                                         <CustomInput control={form.control} name='lastName' label='Last Name' placeholder='Enter your last name' />
                                     </div>
                                     <CustomInput control={form.control} name='address1' label='Address' placeholder='Enter your specific address' />

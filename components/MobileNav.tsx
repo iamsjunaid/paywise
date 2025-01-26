@@ -34,14 +34,14 @@ const MobileNav = ({ user }: MobileNavProps) => {
                 </SheetTrigger>
                 <SheetContent side="left" className="border-none bg-white">
                     <Link href="/" className="cursor-pointer flex items-center gap-1 px-4">
-                        <DialogTitle>Navigation</DialogTitle> {/* Add DialogTitle here */}
+                        <DialogTitle className="hidden"></DialogTitle> {/* Add DialogTitle here */}
                         <Image
                             src="/icons/logo.svg"
                             width={34}
                             height={34}
                             alt="Horizon logo"
                         />
-                        <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">Horizon</h1>
+                        <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">Paywise</h1>
                     </Link>
                     <div className="mobilenav-sheet">
                         <SheetClose asChild>
